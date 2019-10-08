@@ -1,6 +1,6 @@
 # PowerShellScripts
 
-# Private Repo File Fetcher
+## Private Repo File Fetcher
 
 This is a function that will act as a proxy server allowing you to download or execute artiacts held in a private repo (currenlty GitHub). It takes 2 parameters
 <li>githuburi - the original RAW GitHub uri</li>
