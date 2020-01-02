@@ -4,7 +4,7 @@ do
     $UserInput = Read-Host "Please make a selection"
     switch ($userInput)
     {
-        '1' {'You chose option #1'}
+        '1' {'Install AzreRm Module'}
         '2' {'You chose option #2'}
         '3' {'You chose option #3'}
     }
