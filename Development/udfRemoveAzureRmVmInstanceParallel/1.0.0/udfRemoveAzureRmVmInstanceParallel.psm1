@@ -20,7 +20,7 @@ The Azure resource group name.
 .PARAMETER vmName
 The virtual machine name, Regex can be used.
 #>
-function Remove-udfAzureRmVmInstanceparallel {
+function Remove-udfAzureRmVmInstanceParallel {
     [cmdletbinding()]
     param (
         # Name of Resource Group        
