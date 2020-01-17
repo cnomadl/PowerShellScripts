@@ -35,7 +35,7 @@ function New-udfBaResourceGroupCleanup {
     param (
         [cmdletbinding()]
         [Parameter(Mandatory=$True, position=0)]
-        [string]$depName,
+        [string]$depDate,
 
         [parameter(Mandatory=$True, position=1)]
         [string]$resGroup
