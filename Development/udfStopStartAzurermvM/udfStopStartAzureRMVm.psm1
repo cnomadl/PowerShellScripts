@@ -1,16 +1,16 @@
-function udfStopAzureRMVm {
+function udfStopStartAzureRMVm {
     <#
     .SYNOPSIS
-    New-CleanResourceGroup will remove all of the resources VM's, vNets etc from the selected Resource Group
+    udfStopStardAzureRMVm will either stop or start VM's in the selected Resource Group
  
     .DESCRIPTION 
-    The function will remove all of the resources VM's, vNets etc from the selected Resource Group
+    The function will either stop or start VM's in the selected Resource Group
     
-    .PARAMETER depDate
-    The date you are removing the resource group resources (eg 020120)
+    .PARAMETER power
+    The operation you want to perform (e.g. stop | start)
 
     .PARAMETER resGroup
-    The name of your resource group (eg ChrisLangfordRg)
+    The name of your resource group (e.g. ChrisLangfordRg)
  
     .EXAMPLE
  
@@ -22,7 +22,7 @@ function udfStopAzureRMVm {
     URLs to related sites
  
     .INPUTS
-    Deployment Name with date
+    Opertation to perform stop | start
     Resource Group
  
     .OUTPUTS
