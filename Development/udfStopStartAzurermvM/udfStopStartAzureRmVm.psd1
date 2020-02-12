@@ -30,7 +30,7 @@ CompanyName = 'Unknown'
 Copyright = '(c) Chris Langford. All rights reserved.'
 
 # Description of the functionality provided by this module
-# Description = ''
+Description = 'This function will allow you to either Stop or Start Azure VMs'
 
 # Minimum version of the PowerShell engine required by this module
 # PowerShellVersion = ''
