@@ -44,8 +44,8 @@ function udfStopStartAzureRMVm {
     if (!$power){Write-Warning -Message "No powerstate specified. Use -Power start|stop"}
     if (!$resGroup){Write-Warning -Message "No Azure Resorce Group specified. Use -ResourceGroupName 'ResourceGroupName'"}
 
-    # Connect to the Training Team Azure subscription
-    Write-Information -MessageData "Connecting you to the Balic Azure's subscription" -InformationAction Continue
+    # Connect to the Azure subscription
+    Write-Information -MessageData "Connecting you to the Azure subscription" -InformationAction Continue
     Connect-AzureRmAccount
 
     Write-Information -MessageData "Listing VM's in Resource Group '"$resGroup"'" -InformationAction Continue
