@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>udfAzureResourceGroupCleanup</id>
+    <version>1.0.0</version>
+    <authors>Chris Langford</authors>
+    <owners>Chris Langford</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <description>The function will remove all of the resources VMs, vNets etc from the selected Resource Group</description>
+    <copyright>Copyright 2020</copyright>
+    <tags>azurerm</tags>
+  </metadata>
+</package>
