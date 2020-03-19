@@ -1,28 +1,12 @@
-# Enable Context Autosave
-Enable-AzureRmContextAutosave
-
-# Login to Azure
-#Add-AzureRmAccount
-Login-AzureRmAccount
-
-# Save your context
-#Save-AzureRmContext -Path $home\ctx.json -Force
-
-#Define your resource group
-$rg = ''
-
-# define the VM or VMs to be removed
-$VirtualMachineName = ''
-
 function Remove-AzureRmVmInstanceParallel {
     [cmdletbinding()]
     param (
         #Name of Resource Group
-        [parameter(Mandatory)]
+        [parameter(Mandatory, Position=0)]
         [string]$ResourceGroup,
 
         #VMs to remove. Regex are supported
-        [parameter(Mandatory)]
+        [parameter(Mandatory, Position=1)]
         [string]$VmName,
 
         # The script will not wait for background jobs by default, use this switch to wait
@@ -31,6 +15,14 @@ function Remove-AzureRmVmInstanceParallel {
         # Delete public IP, true by default
         $RemovePublicIp = $true
     )
+
+    # Enable Context Autosave
+    Enable-AzureRmContextAutosave
+
+    #Connect to your Azure subscription
+    Write-Information -MessageData "Connecting you to your Azure Subscription" -InformationAction Continue
+    #Connect-AzureRmAccount
+    Login-AzureRmAccount
 
     # Remove the VMs and then datadisk, OSdisk, Nics and NSG
     $jobs = Get-AzureRmVM -ResourceGroupName $ResourceGroup | Where-Object Name -Match $VmName | ForEach-Object {
@@ -153,4 +145,4 @@ function Remove-AzureRmVmInstanceParallel {
 }#function
 
 # Execute the function
-Remove-AzureRMVMInstanceParallel -ResourceGroup $rg -VmName $VirtualMachineName -wait -RemovePublicIp $true
+Remove-AzureRMVMInstanceParallel ChrisLangfordRg -VmName $VirtualMachineName -wait -RemovePublicIp $true
