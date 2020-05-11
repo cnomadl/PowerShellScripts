@@ -20,37 +20,42 @@ function stopStartParallel {
     Write-Information -MessageData "Connecting you to the Azure subscription" -InformationAction Continue
     Connect-AzAccount
 
-    Write-Information -MessageData "Listing VM's in Resource Group '"$resourceGroup"'" -InformationAction Continue
+    Write-Information -MessageData "Listing VM's in Resource Group "$resourceGroup -InformationAction Continue
     $vms = Get-AzVM -ResourceGroupName $resourceGroup
     $vmRunningList = @()
     $vmStoppedList = @()
 
-    foreach($vm in $vms){
-        $vmStatus = Get-AzVM -ResourceGroupName $resourceGroup -Name $vm.name -Status
-        $powerState = (Get-Culture).TextInfo.ToTitleCase(($vmStatus.Statuses)[1].code.split("/")[1])
+    if (!(Get-AzVM -ResourceGroupName $resourceGroup)) {
+        Write-Output -Message 'There are no Virtual Machines in resource group '$resourceGroup
+    }else {
 
-        Write-Output "VM: '"$vm.name"' is" $powerState
-        if ($powerState -eq 'Running')
-        {
-            $vmRunningList = $vmRunningList + $vm.name
-        }
-        if ($powerState -eq 'Deallocated')
-        {
-            $vmStoppedList = $vmStoppedList + $vm.name
-        }
-    }
+        foreach($vm in $vms){
+            $vmStatus = Get-AzVM -ResourceGroupName $resourceGroup -Name $vm.name -Status
+            $powerState = (Get-Culture).TextInfo.ToTitleCase(($vmStatus.Statuses)[1].code.split("/")[1])
 
-    if ($powerState -eq 'start') {
-        Write-Output "Starting VM's "$vmStoppedList " in Resource Group "$resourceGroup
-        $vmStoppedList | ForEach-Object -Parallel {
-            Start-AzVM -ResourceGroupName $resourceGroup -Name $_ -Verbose
+            Write-Output "VM: "$vm.name" is" $powerState
+            if ($powerState -eq 'Running')
+            {
+                $vmRunningList = $vmRunningList + $vm.name
+            }
+            if ($powerState -eq 'Deallocated')
+            {
+                $vmStoppedList = $vmStoppedList + $vm.name
+            }
         }
-    }
 
-    if ($powerState -eq 'stop') {
-        Write-Output "Stopping VM's "$vmRunningList " in Resource Group "$resourceGroup
-        $vmRunningList | ForEach-Object -Parallel {
-            Stop-AzVM -ResourceGroupName $resourceGroup -Name $_ -Verbose
+        if ($powerState -eq 'start') {
+            Write-Output "Starting VM's "$vmStoppedList " in Resource Group "$resourceGroup
+            $vmStoppedList | ForEach-Object -Parallel {
+                Start-AzVM -ResourceGroupName $resourceGroup -Name $_ -Verbose
+            }
+        }
+
+        if ($powerState -eq 'stop') {
+            Write-Output "Stopping VM's "$vmRunningList " in Resource Group "$resourceGroup
+            $vmRunningList | ForEach-Object -Parallel {
+                Stop-AzVM -ResourceGroupName $resourceGroup -Name $_ -Verbose
+            }
         }
     }
     
