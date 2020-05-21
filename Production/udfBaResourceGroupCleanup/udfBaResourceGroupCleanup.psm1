@@ -43,10 +43,9 @@ function New-udfBaResourceGroupCleanup {
 
     # Connect to the Training Team Azure subscription
     Write-Information -MessageData "Connecting you to the Balic Azure's subscription" -InformationAction Continue
-    Connect-AzureRmAccount
+    Connect-AzAccount
 
     # Delete all the resources within the given resource group. 
     Write-Warning -Message "Removing all resources from: $resGroup. This action CAN NOT be undone"
-    New-AzureRmResourceGroupDeployment -Name "ResourceGroupCleanUp$depDate" -ResourceGroupName $resGroup -TemplateFile "https://raw.githubusercontent.com/balticapprenticeships/Azure-Templates/master/resourcegroup-cleanup/removeall.json" -Mode Complete
-    
+    New-AzResourceGroupDeployment -Name "ResourceGroupCleanUp$depDate" -ResourceGroupName $resGroup -TemplateUri "https://raw.githubusercontent.com/balticapprenticeships/Azure-Templates/master/resourcegroup-cleanup/removeall.json" -Mode Complete
 }
