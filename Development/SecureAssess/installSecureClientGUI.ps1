@@ -1,8 +1,8 @@
-##############################################
-# Script to configure lab client environment #
-# Author: Chris Langford                     #
-# Version: 2.4.1                             #
-##############################################
+##################################################
+# Script to install City and Guilds SecureClient #
+# Author: Chris Langford                         #
+# Version: 0.5.1                                 #
+##################################################
 
 Add-Type -AssemblyName System.Windows.Forms
 [System.Windows.Forms.Application]::EnableVisualStyles()
@@ -10,7 +10,7 @@ Add-Type -AssemblyName System.Windows.Forms
 # This will allow the script to self elevate with a UAC prompt as the script need to run as an Administrator in order to function correctly
 
 $ErrorActionPreference = 'SilentlyContinue'
-$wShell = New-Object -ComObject Wscript.Shell
+$wshell = New-Object -ComObject Wscript.Shell
 $button = [System.Windows.MessageBoxButton]::YesNoCancel
 $errorIcon = [System.Windows.MessageBoxImage]::Error
 $ask = 'Do you want to run this as an Administrator?
@@ -18,8 +18,8 @@ $ask = 'Do you want to run this as an Administrator?
         Select "No" to run this as a none administrator
         Select "Cancel" to stop the script.'
 
-if (!([Security.Principle.WindowsPrinciple][Security.Principle.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principle.WindowsBuiltInRole]'Administrator')){
-    $prompt = [Security.WindowsMessageBox]::Show($ask, "Run as an Administrator or not?", $button, $errorIcon)
+if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]'Administrator')){
+    $prompt = [Security.Windows.MessageBox]::Show($ask, "Run as an Administrator or not?", $button, $errorIcon)
     switch ($prompt) {
         Yes {
             Write-Host "You didn't run this script as an Administrator. This script will self elevate to run as an Administrator and continue."
@@ -33,12 +33,12 @@ if (!([Security.Principle.WindowsPrinciple][Security.Principle.WindowsIdentity]:
 }
 
 # The GUI using Windows Forms
-$form = New-Object System.Windows.Form.Form
+$form = New-Object System.Windows.Forms.Form
 $form.ClientSize = New-Object System.Drawing.Point(1050,700)
 $form.Text = "Form"
 $form.TopMost = $false
 
-$panel1 = New-Object System.Windows.Form.Panel
+$panel1 = New-Object System.Windows.Forms.Panel
 $panel1.Height = 156
 $panel1.Width = 1032
 $panel1.Location = New-Object System.Drawing.Point(9,90)
@@ -51,7 +51,7 @@ $label1.Height = 10
 $label1.Location = New-Object System.Drawing.Point(10,30)
 $label1.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',30)
 
-$updateSecureClient = New-Object System.Windows.Form.Button
+$updateSecureClient = New-Object System.Windows.Forms.Button
 $updateSecureClient.Text = "Update SecureClient"
 $updateSecureClient.Width = 200
 $updateSecureClient.Height = 115
