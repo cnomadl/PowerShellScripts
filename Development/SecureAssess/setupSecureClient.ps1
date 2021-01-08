@@ -4,6 +4,8 @@
 # Version: 0.9.0                                 #
 ##################################################
 
+# Download link iex ((New-Object System.Net.WebClient).DownloadString('https://git.io/SecureAssess'))
+
 Add-Type -AssemblyName System.Windows.Forms
 [System.Windows.Forms.Application]::EnableVisualStyles()
 
@@ -59,7 +61,7 @@ $btn_UpdateSecureClient          = New-Object system.Windows.Forms.Button
 $btn_UpdateSecureClient.text     = "Update SecureClient"
 $btn_UpdateSecureClient.width    = 175
 $btn_UpdateSecureClient.height   = 145
-$btn_UpdateSecureClient.location  = New-Object System.Drawing.Point(8,16)
+$btn_UpdateSecureClient.location = New-Object System.Drawing.Point(8,16)
 $btn_UpdateSecureClient.Font     = New-Object System.Drawing.Font('Microsoft Sans Serif',16)
 
 $btn_InstallSecureClinet         = New-Object system.Windows.Forms.Button
@@ -86,7 +88,7 @@ $pnl_Buttons.controls.AddRange(@($btn_UpdateSecureClient,$btn_InstallSecureCline
 $pnl_Footer.controls.AddRange(@($picBox_Logo))
 
 $btn_UpdateSecureClient.Add_Click({
-    $secureClient = (Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*', 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*').DisplayName -Match "SecureClient"
+    $secureClient = (Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*', 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*').DisplayName -Match "SecureClient" -or "SecureAssess C"
     if($secureClient){
         Write-Output "Downloading City and Guilds SecureClient"
         Invoke-WebRequest -Uri https://secureclient.cityandguilds.com/secureclientinstaller.msi -OutFile $env:USERPROFILE\Downloads\SecureClientinstaller.msi
@@ -94,9 +96,9 @@ $btn_UpdateSecureClient.Add_Click({
         Write-Output "Updating City and Guilds Secure Assess Client"
         Start-Process msiexec.exe -Wait -ArgumentList '/i "$env:USERPROFILE\Downloads\SecureClientinstaller.msi" /qn'
 
-        $wShell.popup("Update completed",0,"Done",0x0)
+        $wShell.popup("Update completed",0)
     }else{
-        $wshell.popup("SecureClient is not installed. Please install the client",0,"Done",0x0)
+        $wshell.popup("SecureClient is not installed. Please install the client",0)
     }
 })
 
@@ -109,13 +111,17 @@ $btn_InstallSecureClinet.Add_Click({
     else{        
         Write-Output ".Net Framework 3.5 is already installed"
     }
+
     Write-Output "Downloading City and Guilds SecureClient"
-    Invoke-WebRequest -Uri https://secureclient.cityandguilds.com/secureclientinstaller.msi -OutFile $env:USERPROFILE\Downloads\SecureClientinstaller.msi
+    New-Item C:\PSDownloads -ItemType Directory
+    Invoke-WebRequest -Uri https://secureclient.cityandguilds.com/secureclientinstaller.msi -OutFile C:\PSDownloads\SecureClientinstaller.msi
+    #Invoke-WebRequest -Uri https://secureclient.cityandguilds.com/secureclientinstaller.msi -OutFile $env:USERPROFILE\Downloads\SecureClientinstaller.msi
 
     Write-Output "Installing SecureClinet_CANDG"
-    Start-Process msiexec.exe -Wait -ArgumentList '/i "$env:USERPROFILE\Downloads\SecureClientinstaller.msi" /qn'
+    Start-Process msiexec.exe -Wait -ArgumentList '/i "C:\PSDownloads\SecureClientinstaller.msi" /qn'
+    #Start-Process msiexec.exe -Wait -ArgumentList '/i "$env:USERPROFILE\Downloads\SecureClientinstaller.msi" /qn'
 
-    $wshell.Popup("Installation Completed",0,"Done",0x0)
+    $wshell.Popup("Installation Completed",0)
 })
 
 #function btn_InstallSecureClinet_Click { }
