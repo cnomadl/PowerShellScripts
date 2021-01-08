@@ -3,15 +3,19 @@
 Write-Information -MessageData 'Creating Hyper-V ISO directory' -InformationAction Continue
 New-Item C:\ISOs -ItemType Directory
 
-# Connect to Azure Account
+# Connect to Azure Account (non-interactive)
 Write-Information -MessageData 'Connecting to the Azure storage account' -InformationAction Continue
-Connect-AzAccount
+$azureAplicationId ="Azure AD Application Id"
+$azureTenantId= "Your Tenant Id"
+$azurePassword = ConvertTo-SecureString "strong password" -AsPlainText -Force
+$psCred = New-Object System.Management.Automation.PSCredential($azureAplicationId, $azurePassword)
+Connect-AzAccount -ServicePrincipal -Credential $psCred -TenantId $azureTenantId  
 
 #Selecting the subscription if you have access to more than one subscriptions in your Azure account
 #$context = Get-AzSubscription -SubscriptionId ""
 #Set-AzContext $context
 
-### Connect to Azure storage and Set the context as per the security requirements (i will be trying different options to see which is best)
+### Connect to Azure storage and Set the context as per the security requirements (I will be trying different options to see which is best)
 $StorageAccountName = "balticaibsa"
 $saResourceGroup = "BalticImagesRg"
 

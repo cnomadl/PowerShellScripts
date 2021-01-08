@@ -14,7 +14,11 @@ Start-Process -FilePath "D:\PSDownloads/Compass_Setup.exe" -ArgumentList $compas
 
 ### Install exams
 Write-Information -MessageData 'Connecting to your Azure storage account' -InformationAction Continue
-Connect-AzAccount
+$azureAppId ="f86ea8ca-7bae-4601-9cd9-908b149e003f"
+$azureTenantId= "f4c789a8-4d63-44c3-bdc2-768b9342fa4e"
+$azureAppIdPasswordFile = (Get-Content -Path 'C:\ImageBuilderTemp\AzureAppSecret.txt') | ConvertTo-SecureString -AsPlainText -Force
+$azureAppCred = New-Object System.Management.Automation.PSCredential $azureAppId, $azureAppIdPasswordFile
+Connect-AzAccount -ServicePrincipal -Credential $azureAppCred -TenantId $azureTenantId
 
 ### Connect to Azure storage
 $StorageAccountName = "balticaibsa"
