@@ -90,11 +90,15 @@ $pnl_Footer.controls.AddRange(@($picBox_Logo))
 $btn_UpdateSecureClient.Add_Click({
     $secureClient = (Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*', 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*').DisplayName -Match "SecureClient" -or "SecureAssess C"
     if($secureClient){
-        Write-Output "Downloading City and Guilds SecureClient"
+        Write-Host "Downloading City and Guilds SecureClient"
         Invoke-WebRequest -Uri https://secureclient.cityandguilds.com/secureclientinstaller.msi -OutFile $env:USERPROFILE\Downloads\SecureClientinstaller.msi
 
-        Write-Output "Updating City and Guilds Secure Assess Client"
+        Write-Host "Updating City and Guilds Secure Assess Client"
         Start-Process msiexec.exe -Wait -ArgumentList '/i "$env:USERPROFILE\Downloads\SecureClientinstaller.msi" /qn'
+
+        # Remove Folders
+        Remove-Item "C:\PSDownloads\*" -Force -Recurse
+        Remove-Item "C:\PSDownloads" -Force
 
         $wShell.popup("Update completed",0)
     }else{
@@ -105,21 +109,23 @@ $btn_UpdateSecureClient.Add_Click({
 $btn_InstallSecureClinet.Add_Click({
     $dotNet35 = "HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5"
     if (!(Test-Path $dotNet35)){
-        Write-Output "Installing .Net Framework 3.5"
+        Write-Host "Installing .Net Framework 3.5"
         Enable-WindowsOptionalFeature -FeatureName "NetFx3" -Online        
     }
     else{        
-        Write-Output ".Net Framework 3.5 is already installed"
+        Write-Host ".Net Framework 3.5 is already installed"
     }
 
-    Write-Output "Downloading City and Guilds SecureClient"
+    Write-Host "Downloading City and Guilds SecureClient"
     New-Item C:\PSDownloads -ItemType Directory
     Invoke-WebRequest -Uri https://secureclient.cityandguilds.com/secureclientinstaller.msi -OutFile C:\PSDownloads\SecureClientinstaller.msi
-    #Invoke-WebRequest -Uri https://secureclient.cityandguilds.com/secureclientinstaller.msi -OutFile $env:USERPROFILE\Downloads\SecureClientinstaller.msi
 
-    Write-Output "Installing SecureClinet_CANDG"
+    Write-Host "Installing SecureClinet_CANDG"
     Start-Process msiexec.exe -Wait -ArgumentList '/i "C:\PSDownloads\SecureClientinstaller.msi" /qn'
-    #Start-Process msiexec.exe -Wait -ArgumentList '/i "$env:USERPROFILE\Downloads\SecureClientinstaller.msi" /qn'
+
+    # Remove Folders
+    Remove-Item "C:\PSDownloads\*" -Force -Recurse
+    Remove-Item "C:\PSDownloads" -Force
 
     $wshell.Popup("Installation Completed",0)
 })
