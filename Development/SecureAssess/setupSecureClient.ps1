@@ -1,7 +1,7 @@
 ##################################################
 # Script to install City and Guilds SecureClient #
 # Author: Chris Langford                         #
-# Version: 0.9.0                                 #
+# Version: 1.0.0                                 #
 ##################################################
 
 # Download link iex ((New-Object System.Net.WebClient).DownloadString('https://git.io/SecureAssess'))
