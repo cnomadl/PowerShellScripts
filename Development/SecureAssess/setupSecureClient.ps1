@@ -1,7 +1,7 @@
 ##################################################
 # Script to install City and Guilds SecureClient #
 # Author: Chris Langford                         #
-# Version: 1.0.0                                 #
+# Version: 1.1.0                                 #
 ##################################################
 
 # Download link iex ((New-Object System.Net.WebClient).DownloadString('https://git.io/SecureAssess'))
@@ -91,10 +91,11 @@ $btn_UpdateSecureClient.Add_Click({
     $secureClient = (Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*', 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*').DisplayName -Match "SecureClient" -or "SecureAssess C"
     if($secureClient){
         Write-Host "Downloading City and Guilds SecureClient"
-        Invoke-WebRequest -Uri https://secureclient.cityandguilds.com/secureclientinstaller.msi -OutFile $env:USERPROFILE\Downloads\SecureClientinstaller.msi
+        New-Item C:\PSDownloads -ItemType Directory
+        Invoke-WebRequest -Uri https://secureclient.cityandguilds.com/secureclientinstaller.msi -OutFile C:\PSDownloads\SecureClientinstaller.msi
 
         Write-Host "Updating City and Guilds Secure Assess Client"
-        Start-Process msiexec.exe -Wait -ArgumentList '/i "$env:USERPROFILE\Downloads\SecureClientinstaller.msi" /qn'
+        Start-Process msiexec.exe -Wait -ArgumentList '/i "C:\PSDownloads\SecureClientinstaller.msi" /qn'
 
         # Remove Folders
         Remove-Item "C:\PSDownloads\*" -Force -Recurse
